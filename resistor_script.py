@@ -123,7 +123,7 @@ def append_Band(band_Choice):
 
 # pop
 def pop_Band():
-    band_Select.pop(-1)
+    band_Select.pop()
     print("Last selected band removed.")
     # print(band_Select)
     return band_Select
@@ -239,6 +239,7 @@ def band_Calculator_Differential():
     rvbt = resistor_Value * (band_Tolerence / 100)
     resistor_Value_Max = resistor_Value + (rvbt)
     resistor_Value_Min = resistor_Value - (rvbt)
+    
     print(f"Resistor Value: {resistor_Value} ohms",
           f"Tolerence: {band_Tolerence}%",
           f"Coefficent: {band_Coefficent}ppm/K",
