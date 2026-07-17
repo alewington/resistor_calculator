@@ -73,8 +73,8 @@ def resistor_Selection():
 
 def list_Resistors():
     print(("-"*20)*6)
-    txt = (f"{0:^20}|{1:^20}|{2:^20}|{3:^20}|{4:^20}|{5:^20}|{6:^20}")
-    print(txt.format(
+    # title
+    txt = (
         "Colour",
         "1st Band",
         "2nd Band",
@@ -82,16 +82,26 @@ def list_Resistors():
         "Multiplier",
         "Tolerence",
         "Temp Coefficent"
-        ))
+        )
+    print(f"|{txt[0]:^15}",
+          f"|{txt[1]:^15}",
+          f"|{txt[2]:^15}",
+          f"|{txt[3]:^15}",
+          f"|{txt[4]:^15}",
+          f"|{txt[5]:^15}",
+          f"|{txt[6]:^15}"
+          )
     print(("-"*20)*6)
+
+    # list resistor bands and values
     for x in band_Types:
-        print(f"{x[0]:^20}",
-              f"|{x[1]:^20}",
-              f"|{x[1]:^20}",
-              f"|{x[1]:^20}",
-              f"|{x[2]:^20}",
-              f"|{x[3]:^20}",
-              f"|{x[4]:^20}"
+        print(f"|{x[0]:^15}",
+              f"|{x[1]:^15}",
+              f"|{x[1]:^15}",
+              f"|{x[1]:^15}",
+              f"|{x[2]:^15}",
+              f"|{x[3]:^15}",
+              f"|{x[4]:^15}"
               )
 
 
@@ -100,14 +110,14 @@ def list_Band():
     # for calculation,  then calculate and output result.
     print("Band List:")
     for i in band_Types:
-        print(f"{band_Types.index(i)+1}: {i[0]}")
+        print(f"{band_Types.index(i)}: {i[0]}")
     return
 
 
 # append
 def append_Band(band_Choice):
-    band_Select.append(band_Choice-1)
-    print(band_Select)
+    band_Select.append(band_Choice)
+    # print(band_Select)
     return band_Select
 
 
@@ -115,14 +125,20 @@ def append_Band(band_Choice):
 def pop_Band():
     band_Select.pop(-1)
     print("Last selected band removed.")
-    print(band_Select)
+    # print(band_Select)
     return band_Select
 
 
 # check
 def check_Band(band_Choice):
-    if band_checker[band_Choice-1][len(band_Select)] == 0:
-        print(band_checker[band_Choice-1][len(band_Select)])
+    if band_Choice < 0 or band_Choice > len(band_Types):
+        print("Invalid band selection,  please select a different band.")
+        pop_Band()
+        return
+
+
+def compatibility_Check(band_Choice):
+    if band_checker[band_Choice][len(band_Select)] == 0:
         print("Invalid band selection for current number of bands selected.\n",
               "Please select a different band.")
         pop_Band()
@@ -138,12 +154,16 @@ def calculate_Resistor():
         if res:
             append_Band(int(band_Choice))
             check_Band(int(band_Choice))
+            compatibility_Check(int(band_Choice))
             continue
         elif band_Choice == "p":
             pop_Band()
             continue
         elif band_Choice == "c":
             list_Band()
+            continue
+        elif band_Choice == "l":
+            list_Resistors()
             continue
         elif band_Choice == "r":
             band_Select.clear()
@@ -165,7 +185,7 @@ def band_Output():
         band_Outlist.append(band_Types[i][0])
 
     for i in band_Outlist:
-        print(f"Band Colour {band_Outlist.index(i)+1:<2}: {i:<2}",  end=" | ")
+        print(f"Band Colour {band_Outlist.index(i):<2}: {i:<2}",  end=" | ")
     print("")
 
 
