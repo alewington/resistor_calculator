@@ -3,10 +3,6 @@
 # resistor calculator
 
 
-# Colours and values for resistor calculator.
-# 0 zero value rule ["0", band = 0 = black, mulitplier = 0 = ignore,
-# tolerence = 0 = ignore,  temp coefficent = 0 = ignore]
-# 0 for no band has value for 0 zero ie 0 has meaning and can't be ignored.4
 band_Types = [
     ["Black", 0, 1, 0, 250],
     ["Brown", 1, 10, 1, 100],
@@ -40,33 +36,6 @@ band_checker = [
 ]
 
 
-# banding selcting and reset.
-
-# rules for resistor calculator
-# bands 1-6 available
-# bands 1-3 are for value,  4 is multiplier,  5 is tolerence,  6 is temp
-# coefficent
-# if 6 bands are selected then band 3 is for value,  if 5 bands are selected
-# then band 3 is for multiplier and band 4 is for tolerence,  if 4 bands are
-# selected then band 2 is for value,  band 3 is for multiplier and band 4 is
-# for tolerence.
-# if 6 bands: band 1 is for value,  band 2 is for value,  band 3 is for value,
-# band 4 is for multiplier,  band 5 is for tolerence,  band 6 is for temp
-# coefficent
-# if 5 bands: band 1 is for value,  band 2 is for value,  band 3 is for value,
-# band 4 is for multiplier,  band 5 is for tolerence
-# if 4 bands: band 1 is for value,  band 2 is for value,  band 3 is for value,
-# band 4 is for multiplier,  band 5 is no band option
-# if 3 bands: band 1 is for value,  band 2 is for value,  band 3 is for
-# multiplier,  band 4 is no band option for multiplier,  band 5 is no band
-# option for tolerence?
-# no other options for 2 bands or 1 band as they are not valid for resistor
-# calculation,  but could be used for other purposes such as identifying the
-# type of resistor or the manufacturer.
-
-# band values,  may be removed once identified and replaced with the below
-# options.
-# as listed.
 band_Select = []
 
 # menu
@@ -91,8 +60,6 @@ def main():
             print("Invalid choice,  please try again.")
 """
 
-# select
-
 
 def band_Selection():
     band_Choice = int(input("select band:"))
@@ -106,23 +73,25 @@ def resistor_Selection():
 
 def list_Resistors():
     print(("-"*20)*6)
-    txt = "{0:^20}|{1:^20}|{2:^20}|{3:^20}|{4:^20}|{5:^20}|{6:^20}"
-    print(txt.format("Colour",
-                     "1st Band",
-                     "2nd Band",
-                     "3rd Band",
-                     "Multiplier",
-                     "Tolerence",
-                     "Temp Coefficent"))
+    txt = (f"{0:^20}|{1:^20}|{2:^20}|{3:^20}|{4:^20}|{5:^20}|{6:^20}")
+    print(txt.format(
+        "Colour",
+        "1st Band",
+        "2nd Band",
+        "3rd Band",
+        "Multiplier",
+        "Tolerence",
+        "Temp Coefficent"
+        ))
     print(("-"*20)*6)
     for x in band_Types:
         print(f"{x[0]:^20}",
-              "|{x[1]:^20}",
-              "|{x[1]:^20}",
-              "|{x[1]:^20}",
-              "|{x[2]:^20}",
-              "|{x[3]:^20}",
-              "|{x[4]:^20}"
+              f"|{x[1]:^20}",
+              f"|{x[1]:^20}",
+              f"|{x[1]:^20}",
+              f"|{x[2]:^20}",
+              f"|{x[3]:^20}",
+              f"|{x[4]:^20}"
               )
 
 
@@ -135,11 +104,7 @@ def list_Band():
     return
 
 
-# find
-
 # append
-
-
 def append_Band(band_Choice):
     band_Select.append(band_Choice-1)
     print(band_Select)
@@ -158,7 +123,7 @@ def pop_Band():
 def check_Band(band_Choice):
     if band_checker[band_Choice-1][len(band_Select)] == 0:
         print(band_checker[band_Choice-1][len(band_Select)])
-        print("Invalid band selection for current number of bands selected.",
+        print("Invalid band selection for current number of bands selected.\n",
               "Please select a different band.")
         pop_Band()
         return
@@ -167,15 +132,10 @@ def check_Band(band_Choice):
 # calculate
 def calculate_Resistor():
     resistor_Select = resistor_Selection()
-
     while len(band_Select) < resistor_Select:
-        #  type number for next band or p to pop last band or c to calculate
-        # or r to reset or e to exit
         band_Choice = input("Enter your choice: ")
         res = band_Choice.isdigit()
-
         if res:
-
             append_Band(int(band_Choice))
             check_Band(int(band_Choice))
             continue
@@ -192,6 +152,7 @@ def calculate_Resistor():
             continue
         elif band_Choice == "e":
             exit()
+            return
         else:
             print("Invalid choice,  please try again.")
     return band_Select
@@ -207,25 +168,31 @@ def band_Output():
         print(f"Band Colour {band_Outlist.index(i)+1:<2}: {i:<2}",  end=" | ")
     print("")
 
-# SI unit conversion.
-
 
 def si_Unit(resistor_Value):
     if resistor_Value >= 1000000000:
         resistor_Value_SI = resistor_Value / 1000000000
-        print(f"Resistor Value: {resistor_Value_SI} GΩ (SI Unit - convertion\n\
-              to a higher Si Prefix)")
+        print(
+            f"Resistor Value: {resistor_Value_SI} GΩ (SI Unit - convertion",
+            "to a higher Si Prefix)"
+            )
     elif resistor_Value >= 1000000:
         resistor_Value_SI = resistor_Value / 1000000
-        print(f"Resistor Value: {resistor_Value_SI} MΩ (SI Unit - convertion\n\
-              to a higher Si Prefix)")
+        print(
+            f"Resistor Value: {resistor_Value_SI} MΩ (SI Unit - convertion",
+            "to a higher Si Prefix)"
+            )
     elif resistor_Value >= 1000:
         resistor_Value_SI = resistor_Value / 1000
-        print(f"Resistor Value: {resistor_Value_SI} kΩ (SI Unit - convertion\n\
-              to a higher Si Prefix)")
+        print(
+            f"Resistor Value: {resistor_Value_SI} kΩ (SI Unit - convertion",
+            "to a higher Si Prefix)"
+            )
     else:
-        print(f"Resistor Value: {resistor_Value} Ω (SI Unit - no conversion\n\
-              needed)")
+        print(
+            f"Resistor Value: {resistor_Value} Ω (SI Unit - no conversion",
+            "needed)"
+            )
 
 
 # start of calculation. data collation and organisation.
@@ -233,42 +200,31 @@ def band_Calculator_Setup():
     band_Multiplier = band_Types[band_Select[0]][1]
     band_Tolerence = band_Types[band_Select[1]][1]
     band_Coefficent = band_Types[band_Select[2]][1]
-    # print(f"Multiplier: {band_Multiplier},  Tolerence: {band_Tolerence}%,
-    # Coefficent: {band_Coefficent}ppm/K")
     return band_Multiplier,  band_Tolerence,  band_Coefficent
 
 
 def band_Calculator():
     band_Multiplier, band_Tolerence, band_Coefficent = band_Calculator_Setup()
-    #  type: ignore
-
     band_Value = (
                 (band_Types[band_Select[0]][1]*100)
                 + (band_Types[band_Select[1]][1]*10)
                 + (band_Types[band_Select[2]][1])
                 )
     resistor_Value = band_Value * band_Multiplier
-    # print(f"Resistor Value: {resistor_Value} ohms,
-    # Tolerence: {band_Tolerence}%,  Coefficent: {band_Coefficent}ppm/K")
     return resistor_Value,  band_Tolerence,  band_Coefficent
 
 
-# this can be reduced in code size once checked for accuracy.
-# join 3 and 4 then join 5 and 6 together as they are the same for 3 and 4
-# band resistors and 5 and 6 band resistors.
 def band_Calculator_Differential():
     resistor_Value,  band_Tolerence,  band_Coefficent = band_Calculator()
-    #  type: ignore
     rvbt = resistor_Value * (band_Tolerence / 100)
     resistor_Value_Max = resistor_Value + (rvbt)
     resistor_Value_Min = resistor_Value - (rvbt)
-    print(f"Resistor Value:\n\
-        {resistor_Value}ohms \n\
-        Tolerence: {band_Tolerence}%\n\
-        Coefficent: {band_Coefficent}ppm/K \n\
-        Max Value: {resistor_Value_Max} ohms\n\
-        Min Value: {resistor_Value_Min} ohms\n\
-        ")
+    print(f"Resistor Value: {resistor_Value} ohms",
+          f"Tolerence: {band_Tolerence}%",
+          f"Coefficent: {band_Coefficent}ppm/K",
+          f"Max Value: {resistor_Value_Max} ohms",
+          f"Min Value: {resistor_Value_Min} ohms"
+          )
     si_Unit(resistor_Value)
 
 
